@@ -1,0 +1,43 @@
+public class StringCalculator {
+
+    // Method to add numbers in the string
+    public static int add(String numbers) {
+        if (numbers == null || numbers.isEmpty()) {
+            return 0;
+        }
+
+        String delimiter = ",|\n"; // Default delimiters: comma and newline
+        if (numbers.startsWith("//")) {
+            // Custom delimiter specified
+            int delimiterIndex = numbers.indexOf("\n");
+            delimiter = numbers.substring(2, delimiterIndex); // Extract custom delimiter
+            numbers = numbers.substring(delimiterIndex + 1);  // Remove delimiter definition
+        }
+
+        // Split the numbers using the specified or default delimiters
+        String[] tokens = numbers.split(delimiter);
+        int sum = 0;
+
+        for (String token : tokens) {
+            if (!token.isEmpty()) {
+                int num = Integer.parseInt(token.trim());
+                if (num < 0) {
+                    throw new IllegalArgumentException("Negative numbers are not allowed: " + num);
+                }
+                sum += num;
+            }
+        }
+        return sum;
+    }
+
+    // Main method to test the calculator
+    public static void main(String[] args) {
+        System.out.println(add("")); // Output: 0
+        System.out.println(add("1,2,3")); // Output: 6
+        System.out.println(add("1\n2,3")); // Output: 6
+        System.out.println(add("//;\n1;2;3")); // Output: 6
+        System.out.println(add("10,20\n30")); // Output: 60
+        // Uncomment the line below to see the exception for negative numbers
+        // System.out.println(add("1,-2,3")); // Throws exception
+    }
+}
